@@ -1,11 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Zdefiniowanie elementów
   const loginButton = document.getElementById("modal_trigger");
   const logoutButton = document.getElementById("logout-btn");
   const userInfo = document.getElementById("user-info");
   const loginSignupButtons = document.getElementById("login-signup-buttons");
   const modal = document.getElementById("modal");
   const form = modal.querySelector("form"); // Formularz logowania
+
+  // Przycisk "Dodaj mema"
+  const addMemeButtonContainer = document.getElementById(
+    "add-meme-button-container"
+  );
 
   // Sprawdzamy, czy użytkownik jest już zalogowany
   if (localStorage.getItem("isLoggedIn") === "true") {
@@ -17,7 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Eventy
   loginButton.addEventListener("click", openModal);
   logoutButton.addEventListener("click", logout);
-  form.addEventListener("submit", login);
+  if (form) {
+    form.addEventListener("submit", login);
+  }
 
   // Funkcja otwierająca okno logowania
   function openModal(event) {
@@ -43,8 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const data = await response.json();
-
-    console.log("Response Data:", data); // Debugging response data
 
     if (response.ok && data.token) {
       // Po zalogowaniu, zapisujemy token i email do localStorage
@@ -73,16 +77,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Funkcja do aktualizacji interfejsu użytkownika
+  // Funkcja do aktualizacji interfejsu użytkownika
   function updateUI(email) {
     if (window.isLoggedIn) {
+      if (addMemeButtonContainer) {
+        addMemeButtonContainer.style.display = "block"; // Pokazujemy przycisk "Dodaj mema"
+      }
       userInfo.querySelector("#user-name").textContent = `Welcome, ${email}`;
       userInfo.style.display = "flex";
       logoutButton.style.display = "inline-block"; // Pokazujemy przycisk logout
       loginSignupButtons.style.display = "none"; // Ukrywamy przyciski logowania/rejestracji
     } else {
+      if (addMemeButtonContainer) {
+        addMemeButtonContainer.style.display = "none"; // Ukrywamy przycisk "Dodaj mema"
+      }
       userInfo.style.display = "none";
       logoutButton.style.display = "none"; // Ukrywamy przycisk logout
       loginSignupButtons.style.display = "block"; // Pokazujemy przyciski logowania/rejestracji
     }
+  }
+
+  // Funkcja przekierowująca użytkownika na stronę dodawania mema
+  if (addMemeButtonContainer) {
+    document
+      .getElementById("add-meme-btn")
+      .addEventListener("click", function () {
+        window.location.href = "post.html"; // Przekierowanie na stronę post.html
+      });
   }
 });

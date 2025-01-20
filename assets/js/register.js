@@ -56,11 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Jeśli rejestracja zakończyła się sukcesem
       const data = await response.json();
-      alert("Registration successful! You can now log in.");
+      alert("Rejestracja zakończona sukcesem! Teraz możesz się zalogować.");
+
+      // Po rejestracji, automatycznie wyświetl formularz logowania
+      const modal = document.getElementById("modal");
+      const registerFormSection = document.querySelector(".user_register");
+      const loginFormSection = document.querySelector(".user_login");
+
+      registerFormSection.style.display = "none";
+      loginFormSection.style.display = "block";
+      document.querySelector(".header_title").textContent = "Login";
     } catch (error) {
       // Obsługa błędów
-      console.error("Error:", error.message);
-      alert(`Error: ${error.message}`);
+      console.error("Błąd:", error.message);
+      alert(`Błąd: ${error.message}`);
     }
   });
 });

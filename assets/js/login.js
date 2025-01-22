@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function openModal(event) {
     event.preventDefault();
     modal.style.display = "block";
-    document.body.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Ustawiamy przyciemnienie tła
   }
 
   // Funkcja do logowania użytkownika
@@ -51,9 +50,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const data = await response.json();
 
     if (response.ok && data.token) {
-      // Po zalogowaniu, zapisujemy token i email do localStorage
+      // Po zalogowaniu, zapisujemy token, status logowania i email do localStorage
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("email", email); // Zmieniamy z userName na email
+      localStorage.setItem("token", data.token); // Zapisujemy token do localStorage
       window.isLoggedIn = true; // Ustawiamy globalną zmienną na true
       modal.style.display = "none"; // Ukrywamy modal po zalogowaniu
       document.body.style.backgroundColor = "white"; // Przywracamy kolor tła
@@ -70,13 +70,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function logout() {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("email"); // Usuwamy email z localStorage
+    localStorage.removeItem("token"); // Usuwamy token z localStorage
     window.isLoggedIn = false;
     updateUI();
 
     window.location.reload(); // Przeładowanie strony natychmiast po wylogowaniu
   }
 
-  // Funkcja do aktualizacji interfejsu użytkownika
   // Funkcja do aktualizacji interfejsu użytkownika
   function updateUI(email) {
     if (window.isLoggedIn) {
